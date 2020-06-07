@@ -8,12 +8,33 @@ import 'package:consecutivos/atomic_design/atomos/serie_model.dart';
 import 'package:consecutivos/atomic_design/atomos/series_future.dart';
 import 'package:consecutivos/atomic_design/atomos/tipo_documental_model.dart';
 import 'package:consecutivos/atomic_design/atomos/tipo_documental_future.dart';
+
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_admob/firebase_admob.dart';
+
+const String testDevice ="E083F2E4D447E5C6CE24CECA21EEC025";
 
 class CpanelState extends State<Cpanel>
 {  
 
+  final _adBannerID ="ca-app-pub-8691057045918303/9412131295";  
+  BannerAd _bannerAd;
+
+  static MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
+  keywords: <String>['sport', 'food','app'],
+  childDirected: false,
+  testDevices: <String>[], // Android emulators are considered test devices
+);
+
+BannerAd myBanner = BannerAd(
+  adUnitId:"ca-app-pub-8691057045918303/9412131295",
+  size: AdSize.smartBanner,
+  targetingInfo: targetingInfo,
+  listener: (MobileAdEvent event) {
+    print("BannerAd event is $event");
+  },
+);
   var filtro;
   var usuario;
   var operacion; //{0->Consulta consecutivos del usuario  ::  1->Consulta consecutivos global de la secretaria correspondiente al usuario}
@@ -34,10 +55,26 @@ class CpanelState extends State<Cpanel>
   List<TiposDocumental> listaTipoDocumentoFiltrado;
   Future<List<TiposDocumental>> consultaTipoDocumento;
 
-  
+  @override 
+  initState()
+  {    
+    FirebaseAdMob.instance.initialize
+    (
+      appId: "ca-app-pub-8691057045918303~7169111337"      
+    );  
+    _bannerAd = myBanner..load()..show(anchorType: AnchorType.bottom);
+    super.initState();    
+  }
+
+  @override
+  dispose()
+  {
+    _bannerAd.dispose();
+    super.dispose();
+  }  
 
   CpanelState({@required this.usuario})
-  {      
+  {        
     this.filtro = "";
     this.operacion = 0;
     this.textoEncabezadoDrawer = this.usuario["NOMBRE_COMPLETO"];  
@@ -66,9 +103,8 @@ class CpanelState extends State<Cpanel>
 
   @override
   Widget build(BuildContext context)
-  {
-    this.contextoActual = context;
-
+  {    
+    this.contextoActual = context;    
     switch(this.operacion)
     {
       case 0:
@@ -265,7 +301,7 @@ class CpanelState extends State<Cpanel>
                           padding: EdgeInsets.only(right: 10),
                         )
                       ]
-                    ) 
+                    )                    
                   ],
                 )            
               ]

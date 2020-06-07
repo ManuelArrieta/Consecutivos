@@ -1,0 +1,41 @@
+{
+  "project_info": {
+    "project_number": "919872929171",
+    "firebase_url": "https://consecutivos-c07bd.firebaseio.com",
+    "project_id": "consecutivos-c07bd",
+    "storage_bucket": "consecutivos-c07bd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:919872929171:android:e7ab717cae677b9b42fc66",
+        "android_client_info": {
+          "package_name": "com.example.consecutivos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "919872929171-p432lh79m9ql29p14gt3dqk386iodqc8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDamMdEnLVWIWtmKL7jr9Fdh2EpPptrwo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "919872929171-p432lh79m9ql29p14gt3dqk386iodqc8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-8691057045918303~7169111337"
+    }
+  ],
+  "configuration_version": "1"
+}

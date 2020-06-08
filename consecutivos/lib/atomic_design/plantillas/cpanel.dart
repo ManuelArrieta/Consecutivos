@@ -22,19 +22,11 @@ class CpanelState extends State<Cpanel>
   BannerAd _bannerAd;
 
   static MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
-  keywords: <String>['sport', 'food','app'],
-  childDirected: false,
-  testDevices: <String>[], // Android emulators are considered test devices
-);
+    keywords: <String>['Games', 'Puzzles'],
+    testDevices: null // Android emulators are considered test devices
+  );
 
-BannerAd myBanner = BannerAd(
-  adUnitId:"ca-app-pub-8691057045918303/9412131295",
-  size: AdSize.smartBanner,
-  targetingInfo: targetingInfo,
-  listener: (MobileAdEvent event) {
-    print("BannerAd event is $event");
-  },
-);
+
   var filtro;
   var usuario;
   var operacion; //{0->Consulta consecutivos del usuario  ::  1->Consulta consecutivos global de la secretaria correspondiente al usuario}
@@ -55,26 +47,36 @@ BannerAd myBanner = BannerAd(
   List<TiposDocumental> listaTipoDocumentoFiltrado;
   Future<List<TiposDocumental>> consultaTipoDocumento;
 
-  @override 
-  initState()
-  {    
-    FirebaseAdMob.instance.initialize
-    (
-      appId: "ca-app-pub-8691057045918303~7169111337"      
-    );  
-    _bannerAd = myBanner..load()..show(anchorType: AnchorType.bottom);
-    super.initState();    
-  }
+  
 
   @override
   dispose()
   {
-    _bannerAd.dispose();
+    _bannerAd?.dispose();
     super.dispose();
   }  
 
   CpanelState({@required this.usuario})
-  {        
+  {     
+    FirebaseAdMob.instance.initialize(appId: "ca-app-pub-8691057045918303~7169111337");  
+    
+    _bannerAd = BannerAd
+    (
+      adUnitId: "ca-app-pub-8691057045918303/9412131295",
+      size: AdSize.banner,
+      targetingInfo: targetingInfo,
+      listener: (MobileAdEvent event)
+      {
+        if(event == MobileAdEvent.loaded)
+        {
+          print("SE CARGO EL ADS "+event.toString());
+        }
+      }
+    );
+    _bannerAd
+    ..load()
+    ..show();
+
     this.filtro = "";
     this.operacion = 0;
     this.textoEncabezadoDrawer = this.usuario["NOMBRE_COMPLETO"];  
@@ -103,8 +105,10 @@ BannerAd myBanner = BannerAd(
 
   @override
   Widget build(BuildContext context)
-  {    
+  { 
+    //_bannerAd = createBannerAd()..load()..show();
     this.contextoActual = context;    
+
     switch(this.operacion)
     {
       case 0:
@@ -301,7 +305,7 @@ BannerAd myBanner = BannerAd(
                           padding: EdgeInsets.only(right: 10),
                         )
                       ]
-                    )                    
+                    )                  
                   ],
                 )            
               ]
